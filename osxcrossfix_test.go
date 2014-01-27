@@ -6,7 +6,7 @@ import (
 )
 
 func TestPopularPages(t *testing.T) {
-	injectCertificates()
+	InjectCertificates()
 	websites := []string{"facebook.com", "google.com", "plus.google.com", "twitter.com", "linkedin.com"}
 	for _, website := range websites {
 		_, err := http.Get("https://" + website)

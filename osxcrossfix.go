@@ -11,7 +11,11 @@ import (
 	"net/http"
 )
 
-func injectCertificates() {
+var (
+	RootCAPool *x509.CertPool
+)
+
+func InjectCertificates() {
 	transport, ok := http.DefaultTransport.(*http.Transport)
 	if !ok {
 		log.Printf("Unexpected underlying type of http.DefaultTransport, aborting certificate injection")
@@ -22,15 +26,18 @@ func injectCertificates() {
 		transport.TLSClientConfig = &tls.Config{}
 	}
 
-	if transport.TLSClientConfig.RootCAs == nil {
-		transport.TLSClientConfig.RootCAs = x509.NewCertPool()
-	}
-	if ok := transport.TLSClientConfig.RootCAs.AppendCertsFromPEM([]byte(rootCAs)); !ok {
-		log.Printf("Certificates injection failed")
+	if transport.TLSClientConfig.RootCAs != nil {
+		log.Printf("RootCAs is not nil, cannot inject certificates")
 		return
 	}
+	transport.TLSClientConfig.RootCAs = RootCAPool
 }
 
 func init() {
-	injectCertificates()
+	RootCAPool = x509.NewCertPool()
+	if ok := RootCAPool.AppendCertsFromPEM([]byte(rootCAs)); !ok {
+		log.Printf("Certificates injection failed")
+		return
+	}
+	InjectCertificates()
 }
