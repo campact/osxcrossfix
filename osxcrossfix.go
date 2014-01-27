@@ -1,9 +1,5 @@
 package osxcrossfix
 
-// Only include this file if we are compiling for osx
-// with cgo disabled.
-// +build darwin,!cgo
-
 import (
 	"crypto/tls"
 	"crypto/x509"
@@ -39,5 +35,4 @@ func init() {
 		log.Printf("Certificates injection failed")
 		return
 	}
-	InjectCertificates()
 }
