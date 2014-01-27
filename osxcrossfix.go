@@ -7,10 +7,12 @@ import (
 	"net/http"
 )
 
-var (
-	RootCAPool *x509.CertPool
-)
+// RootCAPool contains the certificate pool of bundled certificates
+var RootCAPool *x509.CertPool
 
+// InjectCertificates injects RootCAPool into the http.DefaultTransport (used by
+// http.DefaultClient), provided it hasn't been tampered with.
+// It is called automatically when compiling for darwin with cgo disabled.
 func InjectCertificates() {
 	transport, ok := http.DefaultTransport.(*http.Transport)
 	if !ok {
