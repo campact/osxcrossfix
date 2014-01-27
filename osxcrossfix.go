@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-func init() {
+func injectCertificates() {
 	transport, ok := http.DefaultTransport.(*http.Transport)
 	if !ok {
 		log.Printf("Unexpected underlying type of http.DefaultTransport, aborting certificate injection")
@@ -29,4 +29,8 @@ func init() {
 		log.Printf("Certificates injection failed")
 		return
 	}
+}
+
+func init() {
+	injectCertificates()
 }
