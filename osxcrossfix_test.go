@@ -1,6 +1,7 @@
 package osxcrossfix
 
 import (
+	"crypto/x509"
 	"net/http"
 	"testing"
 )
@@ -12,6 +13,15 @@ func TestPopularPages(t *testing.T) {
 		_, err := http.Get("https://" + website)
 		if err != nil {
 			t.Fatalf("Could not request %s: %s", website, err)
+		}
+	}
+}
+
+func BenchmarkCertificateParsing(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RootCAPool = x509.NewCertPool()
+		if ok := RootCAPool.AppendCertsFromPEM([]byte(rootCAs)); !ok {
+			b.Fatalf("Parsing failed")
 		}
 	}
 }
