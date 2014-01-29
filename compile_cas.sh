@@ -1,18 +1,8 @@
 #!/bin/bash
 
-curl http://curl.haxx.se/ca/cacert.pem > ca.pem
+[ ! -e data ] && mkdir data;
+curl http://curl.haxx.se/ca/cacert.pem > data/ca.pem
 
-cat > cas.go << EOF
-package osxcrossfix
+# needs go-bindata from github.com/jteeuwen/go-bindata
 
-const (
-	rootCAs = \`
-EOF
-
-cat ca.pem >> cas.go
-
-cat >> cas.go << EOF
-	\`)	
-EOF
-
-gofmt -w cas.go
+go-bindata -pkg=osxcrossfix -nomemcopy data

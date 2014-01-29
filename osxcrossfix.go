@@ -40,6 +40,11 @@ func InjectCertificates() {
 // into the x509.CertPool structure.
 func ParseCertificates() {
 	RootCAPool = x509.NewCertPool()
+	rootCAs, err := Asset("data/ca.pem")
+	if err != nil {
+		log.Print("Certificate data could not be loaded")
+		return
+	}
 	if ok := RootCAPool.AppendCertsFromPEM([]byte(rootCAs)); !ok {
 		log.Printf("Certificates injection failed")
 		return
