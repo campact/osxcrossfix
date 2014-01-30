@@ -9,6 +9,13 @@ import (
 )
 
 func TestPopularPages(t *testing.T) {
+	config := http.DefaultTransport.(*http.Transport).TLSClientConfig
+	oldRootCAPool := config.RootCAs
+	config.RootCAs = RootCAPool
+	defer func() {
+		config.RootCAs = oldRootCAPool
+	}()
+
 	InjectCertificates()
 	websites := []string{"facebook.com", "google.com", "plus.google.com", "twitter.com", "linkedin.com"}
 	for _, website := range websites {
