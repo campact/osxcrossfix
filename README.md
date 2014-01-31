@@ -7,10 +7,10 @@ The error usually encountered when trying this is
 This problem is solved by bundling the most common signing authiorities'
 certificates into the binary and injecting them into the http.DefaultClient.
 
-The injection has a build constraint and will only occur when
+The package has a build constraint and will be completely empty unless
 compiling for darwin while cgo is disabled.
 An underscore import
 
-   import _ "github.com/voxelbrain/osxcrossfix"
+    import _ "github.com/voxelbrain/osxcrossfix"
 
 is therefore always safe to do.

@@ -11,7 +11,7 @@
 // compiling for darwin while cgo is disabled.
 // An underscore import
 //
-//    import _ "github.com/voxelbrain/osxcrossfix"
+//     import _ "github.com/voxelbrain/osxcrossfix"
 //
 // is therefore always safe to do.
 package osxcrossfix
